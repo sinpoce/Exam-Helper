@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exam Helper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="app">
+    <!-- 顶部标题栏 -->
+    <header class="app-header">
+      <div class="brand">
+        <img class="logo-icon" src="icons/icon128.png" alt="">
+        <div class="brand-copy"><span class="title">Exam Helper</span><span class="brand-subtitle">多模型 · 网页练习助手</span></div>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="openTemplatesBtn" title="模板管理" aria-label="模板管理">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        </button>
+        <button class="icon-btn" id="openSettingsBtn" title="设置" aria-label="打开设置">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="app-content">
+      <section class="workspace-intro">
+        <div class="workspace-heading"><span class="eyebrow">学习工作台</span><span class="version-tag">v1.5</span></div>
+        <h1>识别题目，连接你的模型。</h1>
+        <p>先扫描，再批量处理。每一步都有状态可核对。</p>
+        <div class="status-badge" id="statusBadge" role="status" aria-live="polite">
+          <span class="status-dot" id="statusDot"></span><span class="status-text" id="statusText">等待开始</span>
+        </div>
+      </section>
+      <!-- 统计卡片 -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value" id="questionCount">0</span>
+          <span class="stat-label">识别题目</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="answeredCount">0</span>
+          <span class="stat-label">已填写</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="skippedCount">0</span>
+          <span class="stat-label">已跳过</span>
+        </div>
+      </div>
+      <div class="task-progress"><div><span>填写进度</span><span id="progressLabel">0 / 0</span></div><progress id="taskProgress" value="0" max="1" aria-label="已识别题目填写进度"></progress></div>
+
+      <div class="model-picker">
+        <div class="section-header">
+          <label for="activeModelSelect">当前模型</label>
+          <button class="btn-text" id="manageModelsBtn">管理模型</button>
+        </div>
+        <select id="activeModelSelect" aria-describedby="activeModelHint" disabled>
+          <option>正在加载模型…</option>
+        </select>
+        <p id="activeModelHint" class="model-picker-hint" role="status" aria-live="polite"></p>
+      </div>
+
+      <details class="scan-report"><summary>识别详情与兼容性提示</summary><p class="model-picker-hint" id="scanSummary" role="status" aria-live="polite">支持多种题型策略；请先扫描，确认识别数量。</p></details>
+
+      <!-- 操作步骤区 -->
+      <div class="steps-area">
+        <div class="action-row">
+          <button class="btn btn-primary btn-lg" id="scanBtn">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <span>扫描页面题目</span>
+          </button>
+          <button class="btn btn-dark btn-lg" id="startBtn" disabled>
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span id="startBtnText">开始自动答题</span>
+          </button>
+        </div>
+        <button class="btn-text" id="cancelScanBtn" hidden>取消扫描，保留已识别题目</button>
+      </div>
+
+      <!-- 简要日志区域 -->
+      <div class="log-section">
+        <div class="section-header">
+          <span>运行日志</span>
+          <button class="btn-text" id="clearLog">清空</button>
+        </div>
+        <div class="log-container" id="logContent">
+          <div class="log-item log-info">
+            <span class="log-time">--:--</span>
+            <span class="log-msg">准备就绪，请先扫描题目</span>
+          </div>
+        </div>
+      </div>
+      <p class="privacy-note">仅用于获准的练习与测试。内容发送至你选择的服务，答案需核对，不自动提交。</p>
+    </main>
+
+    <!-- 设置浮层 (Modal) -->
+    <div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" aria-hidden="true" inert>
+      <div class="modal-backdrop" id="closeSettingsBackdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="settingsTitle">设置与模型管理</h3>
+          <button class="icon-btn" id="closeSettingsBtn" aria-label="关闭设置">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="settings-tabs" role="tablist" aria-label="设置分类">
+          <button id="modelsTab" role="tab" aria-controls="modelsPanel" aria-selected="true" data-settings-tab="modelsPanel">模型服务</button>
+          <button id="strategiesTab" role="tab" aria-controls="strategiesPanel" aria-selected="false" tabindex="-1" data-settings-tab="strategiesPanel">答题与识别</button>
+        </div>
+        <div class="modal-body">
+          <section id="modelsPanel" role="tabpanel" aria-labelledby="modelsTab">
+          <p class="section-description">独立保存多个服务，按需切换。新配置不会继承其他服务的密钥。</p>
+          <div class="model-list" id="modelList"></div>
+          <button class="btn btn-outline btn-block" id="addModelBtn">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            <span>添加 API / 模型</span>
+          </button>
+          <p class="settings-hint">模型修改在下次扫描或开始时生效；正在运行的任务继续使用启动时的模型。</p>
+          <p class="settings-hint">密钥保存在浏览器扩展存储中，并非加密密钥库。不要使用共享电脑保存生产密钥。</p>
+          </section>
+          <section id="strategiesPanel" role="tabpanel" aria-labelledby="strategiesTab" hidden>
+          <div class="answer-settings">
+            <div class="settings-title">答题策略</div>
+            <label class="setting-toggle" for="parallelSearchEnabled">
+              <input type="checkbox" id="parallelSearchEnabled">
+              <span>批量搜索（一次请求多题）</span>
+            </label>
+            <div class="batch-size-row" id="batchSizeRow">
+              <label for="parallelBatchSize">单次搜索题目数量</label>
+              <input type="number" id="parallelBatchSize" min="1" max="20" step="1" value="5">
+            </div>
+            <p class="settings-hint">只调用当前选中的一个模型，每批一个请求，不是同时发出多次请求。末批不足按实际数量处理；题干与选项合计过长时会自动拆批。</p>
+            <label class="setting-toggle smart-mode-toggle" for="smartMode">
+              <input type="checkbox" id="smartMode" checked>
+              <span>智能模式：跳过无法处理的题目</span>
+            </label>
+            <p class="settings-hint">自动跳过图片、题干不完整、答案缺失或无效的题目；从后续可处理题目补足下一批。当前仅支持文字搜索，不识别图片内容。关闭后遇到这些问题会停止，等待人工处理。</p>
+            <div class="batch-size-row">
+              <label for="requestTimeoutSeconds">单次请求超时（秒）</label>
+              <input type="number" id="requestTimeoutSeconds" min="10" max="180" step="1" value="45">
+            </div>
+            <p class="settings-hint">默认 45 秒。超时不逐题重试；连续两批请求异常或遇到密钥、限流错误会停止任务。设置在下次开始时生效。</p>
+            <div class="settings-title smart-mode-toggle">通用网页识别</div>
+            <label class="setting-toggle smart-mode-toggle">
+              <input type="checkbox" id="autoRescan" checked>
+              <span>页面变化时增量扫描</span>
+            </label>
+            <p class="settings-hint">扫描后监听已加载题块；任务中补入新增题目，空闲时只更新识别结果，不调用 AI。不自动翻页或提交；换页后请重新确认并开始。</p>
+            <label class="setting-toggle smart-mode-toggle">
+              <input type="checkbox" id="aiAssist" checked>
+              <span>AI 补充确认未识别题块</span>
+            </label>
+            <p class="settings-hint">只在点击扫描时发送候选题干与本地控件编号，不发送整页 HTML 或已填答案。每次扫描最多 5 批。</p>
+            <div id="recognitionStrategies" class="strategy-list"></div>
+            <p class="settings-hint">支持开放 Shadow DOM 与同源 iframe。跨域框架、封闭组件、拖拽/排序/连线、图片和复杂富文本仍需人工处理。</p>
+            <p class="settings-hint" id="answerSettingsStatus" role="status" aria-live="polite"></p>
+          </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- 添加/编辑模型浮层 -->
+    <div class="modal" id="editModelModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" aria-hidden="true" inert>
+      <div class="modal-backdrop" id="closeEditBackdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="editModalTitle">添加模型</h3>
+          <button class="icon-btn" id="closeEditBtn" aria-label="关闭模型编辑">
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="modelPreset">服务商与模型预设</label>
+            <select id="modelPreset"></select>
+            <p class="settings-hint" id="modelPresetHint">选择预设可自动填写地址和模型 ID，也可保留自定义配置。</p>
+            <a id="providerDocs" class="provider-docs" target="_blank" rel="noopener noreferrer" hidden>查看服务商官方文档 ↗</a>
+          </div>
+          <div class="form-group">
+            <label for="editName">配置名称</label>
+            <input type="text" id="editName" placeholder="我的模型">
+          </div>
+          <div class="form-group"><label for="editApiType">接口类型</label><select id="editApiType"></select></div>
+          <div class="form-group">
+            <label for="editBaseUrl">Base URL</label>
+            <input type="url" id="editBaseUrl" placeholder="https://api.example.com/v1" autocomplete="off" spellcheck="false">
+            <p class="settings-hint endpoint-preview" id="endpointPreview"></p>
+          </div>
+          <div class="form-group">
+            <label for="editApiKey">API Key</label>
+            <div class="input-wrapper">
+              <input type="password" id="editApiKey" placeholder="输入该服务商的实际 API Key" autocomplete="off" spellcheck="false">
+              <button class="toggle-visibility" id="toggleEditApiKey" aria-label="显示或隐藏 API Key">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editModel">模型ID</label>
+            <input type="text" id="editModel" list="modelSuggestions" placeholder="填写控制台中可用的完整模型 ID" spellcheck="false" autocomplete="off">
+            <datalist id="modelSuggestions"></datalist>
+            <p class="settings-hint">预设不是完整模型列表，支持手动输入；模型是否可用以服务商账户为准。</p>
+          </div>
+          <details class="advanced-settings"><summary>高级连接设置</summary>
+            <div class="form-group"><label for="editAuthMode">认证方式</label><select id="editAuthMode"><option value="api-key">API Key（按接口自动设置请求头）</option><option value="none">免认证（仅本机服务）</option></select></div>
+            <div class="form-group"><label for="editMaxOutputTokens">最大输出 tokens（可选）</label><input type="number" id="editMaxOutputTokens" min="128" max="65536" step="1" placeholder="服务默认；Claude 留空为 4096"></div>
+            <div class="form-group"><label for="editTokenParameter">Chat 输出限制参数</label><select id="editTokenParameter"><option value="auto">自动（OpenAI 官方使用新版参数）</option><option value="max_tokens">max_tokens（常见兼容服务）</option><option value="max_completion_tokens">max_completion_tokens（新版 OpenAI）</option></select><p class="settings-hint">仅影响 Chat 且设置了输出上限的请求。不会强加 temperature、推理或工具参数。</p></div>
+          </details>
+          <div class="connection-check"><button class="btn btn-outline btn-block" id="testConnectionBtn">测试连接与 JSON 回复</button><p class="settings-hint">点击才发送一次简短测试，不含网页题目，可能产生少量费用；关闭编辑窗口会取消等待。</p></div>
+          <div class="config-status" id="editStatus" role="status" aria-live="polite"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-block" id="saveModelBtn">保存</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="modules/answer-engine.js"></script>
+  <script src="modules/question-dom.js"></script>
+  <script src="modules/ai-client.js"></script>
+  <script src="modules/model-presets.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
