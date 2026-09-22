@@ -751,6 +751,20 @@ button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-v
 .title { font-size: 14px; font-weight: 750; letter-spacing: -0.015em; }
 .brand-subtitle { color: var(--text-light); font-size: 10px; line-height: 1.2; }
 .header-actions { gap: 4px; }
+.language-toggle {
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: .02em;
+}
+.language-toggle:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
 .icon-btn { min-width: 32px; min-height: 32px; border-radius: 9px; }
 .icon-btn:hover { background: #eceef6; color: var(--primary); }
 

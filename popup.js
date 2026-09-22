@@ -118,6 +118,7 @@ function taskConfig(model) {
 
 // Initialize
 document.addEventListener("DOMContentLoaded", async () => {
+  await globalThis.ExamI18n?.init();
   initializePresetChoices();
   await initModels();
   await renderMainModelSelector();

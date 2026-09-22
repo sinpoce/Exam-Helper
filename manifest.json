@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Exam Helper",
   "version": "1.5.0",
-  "description": "多模型网页练习助手：通用题目识别、批量处理与填写核验，支持主流 AI API 及本地模型。",
+  "description": "多模型网页练习助手 / Multi-model browser practice assistant: universal question recognition, batch AI processing, answer verification, and mainstream API support.",
   "permissions": [
     "activeTab",
     "storage",

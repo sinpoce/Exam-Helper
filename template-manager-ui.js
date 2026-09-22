@@ -2,6 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("[TemplateUI] 页面加载完成");
+  await globalThis.ExamI18n?.init();
 
   // DOM元素
   const backBtn = document.getElementById("backBtn");

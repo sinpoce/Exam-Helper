@@ -10,6 +10,14 @@
 
 > 仅用于获准的练习、教学与测试场景。扩展不会自动提交页面，AI 生成的答案仍需人工核对。
 
+## English
+
+Exam Helper is a multi-model browser extension for authorized learning and testing. It detects common question structures on web pages, sends questions to the model service you configure, processes multiple questions in one request, and verifies answer controls before filling them. It supports OpenAI-compatible APIs, OpenAI Responses, Anthropic Messages, Gemini, local Ollama / LM Studio services, and editable site templates.
+
+The popup and template manager include a persistent `中文 / English` switch. API keys stay in local extension storage, are never bundled with the project, and are not written to activity logs. The extension does not automatically paginate or submit a page; users should review generated answers before taking any external action.
+
+For installation, provider contracts, security notes, and known limitations, see the sections below and [API_PROVIDERS.md](API_PROVIDERS.md).
+
 ## 界面预览
 
 ### 学习工作台
