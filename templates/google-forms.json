@@ -1,0 +1,50 @@
+{
+  "siteId": "google_forms",
+  "siteName": "Google Forms",
+  "urlPatterns": [
+    "https://docs.google.com/forms/*"
+  ],
+  "urlRegex": "^https?://docs\\.google\\.com/forms/",
+  "version": "1.0.0",
+  "createdAt": "2026-09-22",
+  "lastUpdated": "2026-09-22",
+  "description": "使用 Google Forms 的可访问性角色识别单选、多选、下拉、短答和段落题，避免依赖随机生成的 CSS 类名。",
+  "selectors": {
+    "questionContainer": "[role=\"listitem\"]",
+    "questionTypes": {
+      "detectByInputType": true,
+      "single": {
+        "inputSelector": "[role=\"radiogroup\"] [role=\"radio\"]",
+        "container": "[role=\"listitem\"]",
+        "title": "[role=\"heading\"]",
+        "optionItem": "[role=\"radio\"]",
+        "optionInput": "input[type=\"radio\"]",
+        "optionLabel": "[aria-label]"
+      },
+      "multiple": {
+        "inputSelector": "[role=\"checkbox\"]",
+        "container": "[role=\"listitem\"]",
+        "title": "[role=\"heading\"]",
+        "optionItem": "[role=\"checkbox\"]",
+        "optionInput": "input[type=\"checkbox\"]",
+        "optionLabel": "[aria-label]"
+      },
+      "fill": {
+        "inputSelector": "input[type=\"text\"], input[type=\"number\"], textarea",
+        "container": "[role=\"listitem\"]",
+        "title": "[role=\"heading\"]",
+        "inputs": "input[type=\"text\"], input[type=\"number\"], textarea"
+      }
+    }
+  },
+  "features": {
+    "usesAriaRoles": true,
+    "avoidsGeneratedClasses": true,
+    "autoScrollSupport": true
+  },
+  "sourceReferences": [
+    "https://support.google.com/docs/answer/7322334",
+    "https://www.w3.org/WAI/ARIA/apg/patterns/radio/"
+  ],
+  "notes": "仅处理可验证状态的标准控件；网格、文件上传、日期/时间和图片选项会交给通用策略安全跳过。"
+}

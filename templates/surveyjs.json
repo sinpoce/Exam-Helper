@@ -1,0 +1,56 @@
+{
+  "siteId": "surveyjs_embedded",
+  "siteName": "SurveyJS 嵌入式问卷 / 测验",
+  "domSignatures": [
+    {
+      "all": [".sd-root-modern", ".sd-question"],
+      "any": ["input.sd-item__control", ".sd-question input", ".sd-question textarea", ".sd-question select"]
+    },
+    {
+      "all": [".sv_main", ".sv_qstn"],
+      "any": [".sv_qstn input", ".sv_qstn textarea", ".sv_qstn select"]
+    }
+  ],
+  "version": "1.0.0",
+  "createdAt": "2026-09-22",
+  "lastUpdated": "2026-09-22",
+  "description": "通过 SurveyJS 官方 CSS 契约识别嵌入任意域名的现代版和经典版 SurveyJS 表单。",
+  "selectors": {
+    "questionContainer": ".sd-question, .sv_qstn",
+    "questionTypes": {
+      "detectByInputType": true,
+      "single": {
+        "inputSelector": "input.sd-radio__control, .sv_q_radiogroup input[type=\"radio\"]",
+        "container": ".sd-question, .sv_qstn",
+        "title": ".sd-question__title, .sv_q_title",
+        "optionItem": ".sd-radio, .sv_q_radiogroup label",
+        "optionInput": "input[type=\"radio\"]",
+        "optionLabel": ".sd-item__control-label, .sv-string-viewer"
+      },
+      "multiple": {
+        "inputSelector": "input.sd-checkbox__control, .sv_q_checkbox input[type=\"checkbox\"]",
+        "container": ".sd-question, .sv_qstn",
+        "title": ".sd-question__title, .sv_q_title",
+        "optionItem": ".sd-checkbox, .sv_q_checkbox label",
+        "optionInput": "input[type=\"checkbox\"]",
+        "optionLabel": ".sd-item__control-label, .sv-string-viewer"
+      },
+      "fill": {
+        "inputSelector": ".sd-question input[type=\"text\"], .sd-question input[type=\"number\"], .sd-question textarea, .sv_qstn input[type=\"text\"], .sv_qstn textarea",
+        "container": ".sd-question, .sv_qstn",
+        "title": ".sd-question__title, .sv_q_title",
+        "inputs": "input[type=\"text\"], input[type=\"number\"], textarea"
+      }
+    }
+  },
+  "features": {
+    "embeddedComponent": true,
+    "domSignatureMatch": true,
+    "supportsModernAndLegacyThemes": true
+  },
+  "sourceReferences": [
+    "https://github.com/surveyjs/survey-library/blob/master/packages/survey-core/src/defaultCss/defaultCss.ts",
+    "https://surveyjs.io/form-library/documentation/api-reference/radio-button-question-model"
+  ],
+  "notes": "DOM 特征必须同时命中 SurveyJS 根节点、题目节点和答题控件，避免仅凭单个通用类名误匹配。"
+}

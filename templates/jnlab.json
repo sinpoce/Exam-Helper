@@ -1,0 +1,41 @@
+{
+  "siteId": "jnlab_jiangnan_exam",
+  "siteName": "江南大学实验室安全综合管理系统考试",
+  "urlPatterns": [
+    "https://jnlab.jiangnan.edu.cn/front/*"
+  ],
+  "urlRegex": "^https?://jnlab\\.jiangnan\\.edu\\.cn/front/",
+  "version": "1.0.0",
+  "createdAt": "2026-09-15",
+  "lastUpdated": "2026-09-15",
+  "description": "适配江南大学实验室安全综合管理系统的单选、多选和判断题。",
+  "selectors": {
+    "questionContainer": ".el-form.examForm .el-form-item[id^=\"anchor\"]",
+    "questionTypes": {
+      "detectByInputType": true,
+      "single": {
+        "inputSelector": "input[type=\"radio\"]",
+        "container": ".el-form-item[id^=\"anchor\"]",
+        "title": ".el-form-item__content > div:first-child",
+        "optionItem": ".el-radio",
+        "optionInput": "input[type=\"radio\"]",
+        "optionLabel": ".el-radio__label",
+        "optionLabelPattern": "^\\s*([A-Z])\\s*[.．、]?\\s*"
+      },
+      "multiple": {
+        "inputSelector": "input[type=\"checkbox\"]",
+        "container": ".el-form-item[id^=\"anchor\"]",
+        "title": ".el-form-item__content > div:first-child",
+        "optionItem": ".el-checkbox",
+        "optionInput": "input[type=\"checkbox\"]",
+        "optionLabel": ".el-checkbox__label",
+        "optionLabelPattern": "^\\s*([A-Z])\\s*[.．、]?\\s*"
+      }
+    }
+  },
+  "features": {
+    "hasUniqueQuestionId": true,
+    "usesElementUI": true,
+    "autoScrollSupport": true
+  }
+}

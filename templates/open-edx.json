@@ -1,0 +1,53 @@
+{
+  "siteId": "open_edx_problem",
+  "siteName": "Open edX Problem",
+  "urlRegex": "^https?://[^/]+/(?:courses/[^?#]+/courseware/|learning/course/[^?#]+|xblock/[^?#]+)",
+  "domSignatures": [
+    {
+      "all": [".xblock-student_view", ".problem"],
+      "any": [".problem input[type=\"radio\"]", ".problem input[type=\"checkbox\"]", ".problem input[type=\"text\"]", ".problem textarea", ".problem select"]
+    }
+  ],
+  "version": "1.0.0",
+  "createdAt": "2026-09-22",
+  "lastUpdated": "2026-09-22",
+  "description": "适配 Open edX 标准 Problem/XBlock 中的选择、复选、文本、数字和下拉响应。",
+  "selectors": {
+    "questionContainer": ".xblock-student_view .problem, .problem",
+    "questionTypes": {
+      "detectByInputType": true,
+      "single": {
+        "inputSelector": "input[type=\"radio\"]",
+        "container": ".problem",
+        "title": ".problem-header, .question-description, h3",
+        "optionItem": "label, .choicegroup > div",
+        "optionInput": "input[type=\"radio\"]",
+        "optionLabel": ".choice-label, .label-text, span"
+      },
+      "multiple": {
+        "inputSelector": "input[type=\"checkbox\"]",
+        "container": ".problem",
+        "title": ".problem-header, .question-description, h3",
+        "optionItem": "label, .checkboxgroup > div",
+        "optionInput": "input[type=\"checkbox\"]",
+        "optionLabel": ".choice-label, .label-text, span"
+      },
+      "fill": {
+        "inputSelector": "input[type=\"text\"], input[type=\"number\"], textarea",
+        "container": ".problem",
+        "title": ".problem-header, .question-description, h3",
+        "inputs": "input[type=\"text\"], input[type=\"number\"], textarea"
+      }
+    }
+  },
+  "features": {
+    "selfHosted": true,
+    "xblockProblem": true,
+    "domSignatureMatch": true
+  },
+  "sourceReferences": [
+    "https://github.com/openedx/openedx-platform/blob/master/xmodule/capa_block.py",
+    "https://docs.openedx.org/en/latest/educators/references/course_development/working_with_problem_components.html"
+  ],
+  "notes": "拖拽、公式编辑器、代码题和自定义 JavaScript XBlock 不会被模板强行操作；跨域框架仍按安全规则提示。"
+}

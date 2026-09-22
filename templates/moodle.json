@@ -1,0 +1,48 @@
+{
+  "siteId": "moodle_quiz",
+  "siteName": "Moodle 测验",
+  "urlRegex": "^https?://[^/]+/(?:[^?#]*/)?mod/quiz/(?:attempt|review)\\.php(?:[?#].*)?$",
+  "version": "1.0.0",
+  "createdAt": "2026-09-22",
+  "lastUpdated": "2026-09-22",
+  "description": "适配 Moodle 标准 Quiz 的单选、多选、判断、填空、数字和简答题；自动排除题目标记复选框。",
+  "selectors": {
+    "questionContainer": ".que",
+    "ignoreControls": ".questionflag input, input[name$=\":flagged\"], input[id$=\":flaggedcheckbox\"]",
+    "questionTypes": {
+      "detectByInputType": true,
+      "single": {
+        "inputSelector": ".answer input[type=\"radio\"]",
+        "container": ".que",
+        "title": ".qtext",
+        "optionItem": ".answer > div, .answer > label",
+        "optionInput": "input[type=\"radio\"]",
+        "optionLabel": "label, .flex-fill, .answernumber + div"
+      },
+      "multiple": {
+        "inputSelector": ".answer input[type=\"checkbox\"]",
+        "container": ".que",
+        "title": ".qtext",
+        "optionItem": ".answer > div, .answer > label",
+        "optionInput": "input[type=\"checkbox\"]",
+        "optionLabel": "label, .flex-fill, .answernumber + div"
+      },
+      "fill": {
+        "inputSelector": ".formulation input[type=\"text\"], .formulation input[type=\"number\"], .formulation textarea",
+        "container": ".que",
+        "title": ".qtext",
+        "inputs": ".formulation input[type=\"text\"], .formulation input[type=\"number\"], .formulation textarea"
+      }
+    }
+  },
+  "features": {
+    "selfHosted": true,
+    "supportsStandardQuiz": true,
+    "autoScrollSupport": true
+  },
+  "sourceReferences": [
+    "https://github.com/moodle/moodle/blob/main/public/question/engine/renderer.php",
+    "https://docs.moodle.org/en/Quiz_question_types"
+  ],
+  "notes": "仅匹配 mod/quiz 的答题或回顾路径。复杂 STACK、拖拽、匹配和插件自定义题型仍交由通用策略判断或人工处理。"
+}

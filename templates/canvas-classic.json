@@ -1,0 +1,48 @@
+{
+  "siteId": "canvas_classic_quiz",
+  "siteName": "Canvas Classic Quizzes",
+  "urlRegex": "^https?://[^/]+/(?:[^?#]*/)?courses/[^/?#]+/quizzes/[^/?#]+(?:/(?:take|history|results))?(?:[/?#].*)?$",
+  "version": "1.0.0",
+  "createdAt": "2026-09-22",
+  "lastUpdated": "2026-09-22",
+  "description": "适配 Canvas LMS 经典测验的选择、判断、短答、数字、简答和下拉题；New Quizzes 跨域 LTI 页面可能需要单独打开。",
+  "selectors": {
+    "questionContainer": ".question[id^=\"question_\"], .question_holder .question",
+    "ignoreControls": ".flag_question input, input[name$=\"[flagged]\"]",
+    "questionTypes": {
+      "detectByInputType": true,
+      "single": {
+        "inputSelector": "input.question_input[type=\"radio\"]",
+        "container": ".question",
+        "title": ".question_text",
+        "optionItem": ".answers .answer",
+        "optionInput": "input.question_input[type=\"radio\"]",
+        "optionLabel": "label, .answer_label"
+      },
+      "multiple": {
+        "inputSelector": "input.question_input[type=\"checkbox\"]",
+        "container": ".question",
+        "title": ".question_text",
+        "optionItem": ".answers .answer",
+        "optionInput": "input.question_input[type=\"checkbox\"]",
+        "optionLabel": "label, .answer_label"
+      },
+      "fill": {
+        "inputSelector": "input.question_input[type=\"text\"], input.question_input[type=\"number\"], textarea.question_input",
+        "container": ".question",
+        "title": ".question_text",
+        "inputs": "input.question_input[type=\"text\"], input.question_input[type=\"number\"], textarea.question_input"
+      }
+    }
+  },
+  "features": {
+    "selfHosted": true,
+    "classicQuizOnly": true,
+    "autoScrollSupport": true
+  },
+  "sourceReferences": [
+    "https://github.com/instructure/canvas-lms/blob/master/app/helpers/quizzes_helper.rb",
+    "https://github.com/instructure/canvas-lms/blob/master/doc/examples/quiz_question_answers.md"
+  ],
+  "notes": "Canvas New Quizzes 使用 LTI/React 架构，若处于不可访问的跨域 iframe，插件会明确提示而不会越界读取。"
+}
